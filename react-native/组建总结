@@ -1,0 +1,57 @@
+View
+ScroolView
+ListView
+
+npm install -g code-push-cli
+
+Tb_4ffekYdBwbzYxGlVAJyL-DZF1VJZqIE16z
+
+root@rose-OptiPlex-3020:~/Desktop/mall# code-push app add rose-android
+Successfully added the "rose-android" app, along with the following default deployments:
+┌────────────┬───────────────────────────────────────┐
+│ Name       │ Deployment Key                        │
+├────────────┼───────────────────────────────────────┤
+│ Production │ 8bJAOYiRLQWJ3no7QMq6uqkbYLzwVJZqIE16z │
+├────────────┼───────────────────────────────────────┤
+│ Staging    │ JpjiekE8AceZmt9wRTvJ3oriThoLVJZqIE16z
+
+
+code-push deployment ls -k rose-android
+
+android/app/build.gradle 改
+
+defaultConfig {
+    applicationId "com.mall"
+    minSdkVersion 16
+    targetSdkVersion 22
+    versionCode 1
+    versionName "1.0.0"
+    ndk {
+        abiFilters "armeabi-v7a", "x86"
+    }
+}
+
+android/app/src/main/java/com/mall/MainApplication.java 改
+
+protected List<ReactPackage> getPackages() {
+  return Arrays.<ReactPackage>asList(
+      new MainReactPackage(),
+      new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG)
+  );
+}
+
+开始更新
+
+在 js中加载 CodePush模块：
+import codePush from 'react-native-code-push'
+2.在 componentDidMount中调用 sync方法，后台请求更新
+codePush.sync()
+
+如果可以进行更新，CodePush会在后台静默地将更新下载到本地，等待APP下一次启动的时候应用更新，以确保用户看到的是最新版本。
+如果更新是强制性的，更新文件下载好之后会立即进行更新。
+如果你期望更及时的获得更新，可以在每次APP从后台进入前台的时候去主动的检查更新：
+在应用的根component的componentDidMount中添加如下代码：
+AppState.addEventListener("change", (newState) => {
+    newState === "active" && codePush.sync();
+});
+code-push release-react rose-android  android --t 1.0.0 --dev false --d Production --des "1.优化操作流程" --m true

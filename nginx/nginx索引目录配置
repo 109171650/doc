@@ -1,0 +1,36 @@
+ nginx索引目录配置
+
+为了简单共享文件，有些人使用svn，有些人使用ftp，但是更多得人使用索引(index)功能。apache得索引功能强大，并且也是最常见得，nginx得auto_index实现得目录索引偏少,而且功能非常简单。先来看看我们得效果图。
+
+nginx auto_index索引效果图
+
+nginx配置
+        location ~ ^/2589(/.*)
+        {
+                autoindex on; //开启
+                autoindex_localtime on;//开启显示功能
+        }
+
+auto_index指令
+语法: 	autoindex on | off;
+配置段:
+
+autoindex off;
+配置段: 	http, server, location
+
+启用/仅用nginx目录索引功能.
+
+语法: 	autoindex_exact_size on | off;
+配置段
+
+autoindex_exact_size on;
+配置段: 	http, server, location
+
+制定是否额外得显示文件得大小，单位为字节，mb,gb等等. 默认是打开得
+
+syntax: 	autoindex_localtime on | off;
+
+autoindex_localtime off;
+配置段: 	http, server, location
+
+指定是否显示目录或者文件得时间，默认是不显示

@@ -1,0 +1,63 @@
+Ubuntu下批量转换视频为H.264编码的mp4格式 2012-11-04 17:43:14
+
+apt install ffmpeg ffmpeg-doc
+
+ffmpeg -i input.wmv -strict -2 -c:v libx264 -pix_fmt yuv420p -preset veryslow -tune fastdecode -profile:v main -coder 0 -g 6 -crf 20 output.mp4
+
+@echo                AVI转wav批处理脚本
+@echo   —————————————————————————–
+@echo
+@ echo 开始视频转换过程
+@ echo 确认请按任意键，否则关闭执行窗口,或者按ctrl+c终止
+@ echo 使用ffmpeg命令开始批量转换，注意ffmpeg必须在path环境内
+@pause
+for /r . %%a in (*.avi) do ffmpeg -i %%~na.avi -ar 16000 -ac 1 %%~na.wav
+
+#!/bin/bash
+for %%a in ("*.*") do ffmpeg -i "%%a" -c:v libx264 -pix_fmt yuv420p -preset veryslow -tune fastdecode -profile:v main -coder 0 -g 6 -crf 20 "newfiles\%%~na.mp4"
+
+#!/bin/bash
+for %%a in ("*.*") do ffmpeg -i "%%a" -strict -2 "newfiles\%%~na.mp4"
+
+ffmpeg -i input.wmv -strict -2
+分类： LINUX
+
+        H.264是目前比较流行的视频编码方式，与MPEG2相比在画质大致相同的情况下能再压缩2～4倍，即如果一个DVD视频大小是1GB，用H264编码后能缩小到250MB左右，同时H264视频还能用时髦的浏览 器（比如Firefox，Chrome，ie9等）直接播放，如果有一堆DVD或者Home Video（旧款的家用DV一般是MPEG2格式）想刻录到光盘存档，又或者有一大堆RMVB，AVI等想用iPod或iPad播放，那么用H264编码是一个不错的选择。
+
+        Ubuntu软件中心有一个名为 Transmageddon 软件，可以很方便地制作如 mp4，Ogg，QuickTime等格式。不过如果有一大批视频需要转换，那么使用 mencoder 程序会比较方便，mencoder几乎支持所有的视频格式，而且可调参数丰富、速度快。
+
+首选安装 mencoder 程序：
+
+$ sudo apt-get install mencoder
+
+
+查看系统支持哪些视频和音频编码器：
+
+$ mencoder -ovc help
+$ mencoder -oac help
+
+
+然后查看系统支持哪些封装格式：
+$ mencoder -of help
+
+
+       如果有mp3lame音频编码器和x264视频编码器以及mp4格式封装，那么所有的条件就已经具备了，否则可能需要安装相应的音频和视频编码器：
+
+$ sudo apt-get install ffmpeg libavcodec-extra-52
+
+
+首先试试压缩一段MPEG2视频
+
+$ mencoder m001.mpg -o m001.mp4 -oac mp3lame -ovc x264 -of lavf -vf lavcdeint
+
+       上面命令中的 m001.mpg 和 m001.mp4 分别是输入和输出文件名，-oac 用于指定音频编码器，-ovc 指定视频编码器， -of 指定输出文件封装方式，lavf表示输出文件封装方式由输出文件名决定（即用m001.mp4就用mp4封装，用m001.avi的话就用avi封 装），最后 -vf lavcdeint 参数用于去除视频中的拉丝条纹（锯齿纹），如果没有的话不要这个参数也可以。
+
+
+       h264的编码过程比较耗时，基本上就是视频播放有多长时间，编码就需要多长时间。也可以写一段脚本用于批量转换编码：
+
+#!/bin/bash
+find . -type f \( -name “*.mpg” -o -name “*.mpeg” \)|while read line;do
+echo $line
+mencoder $line -o ${line}.mp4 -oac mp3lame -ovc x264 -of lavf -vf lavcdeint
+
+      将上面的脚本保存在存放原始视频的文件夹里，然后添加可执行属性再运行，就可以把文件夹里所有后缀名为“mpg”的视频编码为H264+mp4封装的格式了。

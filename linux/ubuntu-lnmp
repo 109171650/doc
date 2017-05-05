@@ -1,0 +1,65 @@
+
+ubuntu 16.04 下配置lnmp环境
+
+    nginx ubuntu16.04 php 
+
+klinson 2016年09月04日发布
+
+0 推荐
+
+    3 收藏，1.9k 浏览
+
+系统升级
+
+    sudo atp-get update
+
+安装nginx
+
+    sudo apt-get install nginx一条指令就搞定了安装
+
+    默认web路径在/var/www/html,访问本地http://loaclhost/出现Welcome to Nginx！,即是安装成功!
+
+安装mysql
+
+安装mysql,我之前写过lamp环境配置,内容大同小异,故此处略..
+centos7下的lamp开发环境搭建
+安装php7.0
+
+    sudo apt install php7.0-fpm php7.0-cgi php7.0-common php7.0-curl php7.0-mysql php7.0-mcrypt php7.0-sqlite3
+
+    配置
+    打开php.ini,vim /etc/php/7.0/fpm/php.ini,设置cgi.fix_pathinfo=0:
+
+nginx虚拟主机配置
+
+    /etc/nginx/sites-available目录下,新建test.app文件,写下如下内容
+
+    server {
+            listen 80;
+            listen [::]:80;
+
+            server_name test.app;
+
+            root /var/www/nginx/test;
+            index index.html index.php;
+
+            location / {
+                    try_files $uri $uri/ =404;
+            }
+
+            location ~ \.php$ {
+                    include snippets/fastcgi-php.conf;
+
+                    # With php7.0-cgi alone:
+                    # fastcgi_pass 127.0.0.1:9000;
+                    # With php7.0-fpm:
+                    fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+            }
+    }
+
+    通过指令sudo ln -s /etc/nginx/sites-available/test.me /etc/nginx/sites-enabled/test快捷方式到sites-enabled目录
+
+    修改/etc/hosts文件,最下面添加一句127.0.0.1 test.app
+
+    重启服务
+    service nginx restart service php7.0-fpm restart后,即可访问http://test.app/,将显示/var/www/nginx/test/目录下的内容
