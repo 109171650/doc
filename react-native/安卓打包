@@ -5,6 +5,7 @@
 在项目的主目录中执行：
 
 keytool -genkey -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+
 [注：在产生的时候需要提供密钥和存储密码，后续会用到]
 
 mv my-release-key.keystore android/app/
@@ -13,8 +14,8 @@ mv my-release-key.keystore android/app/
 
 MYAPP_RELEASE_STORE_FILE=my-release-key.keystore
 MYAPP_RELEASE_KEY_ALIAS=my-key-alias
-MYAPP_RELEASE_STORE_PASSWORD=xx
-MYAPP_RELEASE_KEY_PASSWORD=xx
+MYAPP_RELEASE_STORE_PASSWORD=*****
+MYAPP_RELEASE_KEY_PASSWORD=*****
 [注意替换xx为你自己设置的密钥和存储密码]
 
 ###### 3, 修改android/app/build.gradle文件中的签名配置：
