@@ -44,7 +44,7 @@ android {
 
 ###### 4, 然后进入android目录执行如下：
 
-./gradlew assembleRelease
+cd android && ./gradlew assembleRelease
 
 结束后会在android/app/build/outputs/apk/app-release.apk。
 
