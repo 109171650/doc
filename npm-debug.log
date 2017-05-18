@@ -13,7 +13,7 @@
 4 verbose stack     at ReadFileContext.callback (/usr/lib/node_modules/npm/node_modules.bundled/graceful-fs/graceful-fs.js:78:16)
 4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:366:13)
 5 verbose cwd /data/doc
-6 error Linux 4.10.12-200.fc25.x86_64
+6 error Linux 4.10.14-200.fc25.x86_64
 7 error argv "/usr/bin/node" "/usr/bin/npm" "start"
 8 error node v6.10.2
 9 error npm  v3.10.10
