@@ -1,9 +1,9 @@
 一、开源库介绍
 
 react-navigation库包含三类组件：
-  （1）StackNavigator：用来跳转页面和传递参数
-  （2）TabNavigator：类似底部导航栏，用来在同一屏幕下切换不同界面
-  （3）DrawerNavigator：侧滑菜单导航栏，用于轻松设置带抽屉导航的屏幕
+    （1）StackNavigator：用来跳转页面和传递参数
+    （2）TabNavigator：类似底部导航栏，用来在同一屏幕下切换不同界面
+    （3）DrawerNavigator：侧滑菜单导航栏，用于轻松设置带抽屉导航的屏幕
 
 二、react-navigation使用
 
